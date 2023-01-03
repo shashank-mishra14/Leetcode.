@@ -1,0 +1,17 @@
+class Solution {
+    public int minDeletionSize(String[] strs) {
+        if(strs == null || strs.length ==0) return 0;
+        int del=0;
+        for( int col=0;col<strs[0].length(); col++){
+            char character = strs[0].charAt(col);
+            for(int word = 0; word<strs.length;word++){
+                if(strs[word].charAt(col)< character){
+                    del++;
+                    break;
+                }
+                character = strs[word].charAt(col);
+            }
+        }
+        return del;   
+    }
+}
