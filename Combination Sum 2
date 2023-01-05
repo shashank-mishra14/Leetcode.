@@ -1,0 +1,37 @@
+class Solution 
+{
+    public void help(int i, int[] arr, int n, List<Integer> subSet, List<List<Integer>> powerSet, int sum, int target) 
+    {
+        if(sum == target) 
+        {
+            powerSet.add(new ArrayList(subSet)) ;
+            return;
+        }
+
+        if(sum > target) return ;
+
+        if(i == n) return;
+
+        subSet.add(arr[i]) ;
+        sum += arr[i] ;
+        help(i + 1, arr, n, subSet, powerSet, sum, target) ;
+
+        subSet.remove(subSet.size()-1);
+        sum -= arr[i];
+
+        while(i + 1 < arr.length && arr[i] == arr[i + 1]) i++ ;
+        help(i + 1, arr, n, subSet, powerSet, sum, target) ;
+    }
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) 
+    {
+        List<Integer> subSet = new ArrayList<>() ;
+        List<List<Integer>> powerSet = new ArrayList<>() ;
+        int sum = 0;
+        int n = candidates.length ;
+        Arrays.sort(candidates) ;
+
+        help(0, candidates, n, subSet, powerSet, sum, target) ;
+
+        return powerSet ;
+    }
+}
