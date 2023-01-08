@@ -1,0 +1,23 @@
+class Solution {
+    static List<List<Integer>> finalList;
+    public List<List<Integer>> subsets(int[] nums) {
+        finalList = new ArrayList<>();
+        subsetsHelper(nums, 0, new ArrayList<>());
+        return finalList;
+    }
+    public static void subsetsHelper(int[] nums, int i, List<Integer> list) {
+        if(i == nums.length){
+            finalList.add(new ArrayList<>(list));
+            return;
+        }
+        
+        //excluding element
+        subsetsHelper(nums, i+1, list);
+
+        //including element
+        list.add(nums[i]);
+        subsetsHelper(nums, i+1, list);
+        //remove added element from list
+        list.remove(list.size()-1);
+    }
+}
