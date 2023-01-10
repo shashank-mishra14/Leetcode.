@@ -1,0 +1,44 @@
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if (matrix == null) {
+            throw new IllegalArgumentException("Input matrix is null");
+        }
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        if (cols < rows) {
+            return maximalRectangleHelper(matrix, rows, cols, true);
+        } else {
+            return maximalRectangleHelper(matrix, cols, rows, false);
+        }
+    }
+
+    private int maximalRectangleHelper(char[][] matrix, int big, int small, boolean isColsSmall) {
+        int[] heights = new int[small];
+        int largestRectangle = 0;
+        for (int i = 0; i < big; i++) {
+            Deque<Integer> stack = new ArrayDeque<>();
+            for (int j = 0; j <= small; j++) {
+                if (j < small) {
+                    if (isColsSmall) {
+                        heights[j] = matrix[i][j] == '0' ? 0 : heights[j] + 1;
+                    } else {
+                        heights[j] = matrix[j][i] == '0' ? 0 : heights[j] + 1;
+                    }
+
+                }
+                while (!stack.isEmpty() && (j == small || heights[stack.peek()] >= heights[j])) {
+                    int h = heights[stack.pop()];
+                    int left = stack.isEmpty() ? -1 : stack.peek();
+                    largestRectangle = Math.max(largestRectangle, (j - 1 - left) * h);
+                }
+                stack.push(j);
+            }
+        }
+        return largestRectangle;
+    }
+}
