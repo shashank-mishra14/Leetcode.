@@ -1,0 +1,49 @@
+class Solution {
+    
+    List<String> ans = new ArrayList<String>();
+    public List<String> restoreIpAddresses(String s) {
+        
+        //Check if string is valid length
+        if(s.length() < 4 || s.length() > 12)
+            return ans;
+        
+        //Check if string contains non numerical values
+        if(!s.matches("^[0-9]+$"))
+            return ans;
+        
+        ip(s, 0 , "");
+        return ans;
+    }
+    
+    public void ip(String s , int x , String ad){
+        //If at last integer
+        if(x == 3){
+            int num = -1;
+            if(s.length() > 0){
+                num =  Integer.parseInt(s);
+            }
+           
+            if(s.length() > 1 && s.charAt(0) == '0'){}
+            else if(num >= 0 && num<= 255) {
+                ans.add(ad+"."+s); //Adding to list of string ans
+            }
+        }
+        else{
+            int lim = Math.min(3, s.length());
+            for(int i = 0 ; i < lim ; i++){
+                String temp = s.substring(0 , i+1);
+                int num = Integer.parseInt(temp);
+                if(i > 0 && temp.charAt(0) == '0'){}
+                else if(num >= 0 && num<= 255) {
+                    if(x==0){
+                        ip(s.substring(i+1), x + 1, temp);
+                    }
+                    else{
+                        ip(s.substring(i+1), x + 1, ad+"."+temp);
+                    }
+                    
+                }
+            }
+        }
+    }
+}
