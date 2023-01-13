@@ -1,0 +1,23 @@
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode roots, int sum) {
+        List<List<Integer>> paths = new ArrayList<>();
+        findPaths(roots, sum, new ArrayList<Integer>(), paths);
+
+         return paths; 
+    }
+
+public void findPaths(TreeNode roots, int sum, List<Integer> current, List<List<Integer>> paths){
+    if(roots == null){
+        return;
+    }
+
+    current.add(roots.val);
+    if(roots.val == sum && roots.left == null && roots.right == null){
+        paths.add(current);
+        return;
+    }
+    findPaths(roots.left, sum - roots.val, new ArrayList<Integer>(current), paths);
+    findPaths(roots.right, sum - roots.val, new ArrayList<Integer>(current), paths);
+
+}
+}
