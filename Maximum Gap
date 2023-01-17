@@ -1,0 +1,64 @@
+
+class Solution {
+	public int maximumGap(int[] nums) {
+	   int n = nums.length;
+
+	   if(n < 2)
+			return 0;
+
+		int min = Integer.MAX_VALUE;
+		int max = -1;
+
+		for(int num : nums){
+			min = Math.min(min, num);
+			max = Math.max(max, num);
+		}
+
+		//average interval/gap -> total gap / no of gaps
+		//no of gaps = n - 1
+		int interval = (int)(Math.ceil((max - min + 0.0) / (n - 1)));
+		if(interval == 0)//all are equal
+			return 0;
+
+		//there is atleast one gap of >= interval to make total gap
+		//eg. if total = 7, no of gap = 3, then at least one gap is >= 3
+		//bcz if we take 3 gaps of 2 -> then it can not make 7
+
+		//maxGap >= interval
+		//try to sort the array by bucket sort
+		//bucket contains elemnts whose gap is less than interval -> the gap b/w elemnts in a single bucket not gives max Gap
+
+		int[] bucketMin = new int[n];
+		int[] bucketMax = new int[n];
+		//is no of gaps of size interval
+		//[i] - bcket can have min + i * interval to min + (i + 1) * interval - 1
+
+		Arrays.fill(bucketMin, Integer.MAX_VALUE);
+		Arrays.fill(bucketMax, Integer.MIN_VALUE);
+		//we only neeed to store min and max of bucket -> bcz distance between successive elemnts between 2 buckets can give gap >= interval
+
+		//fill bucket
+		for(int num : nums){
+			int index = (num - min) / interval;
+
+			bucketMin[index] = Math.min(bucketMin[index], num);
+			bucketMax[index] = Math.max(bucketMax[index], num);
+		}
+
+		//check b/w successive points
+		int prev = min;
+		int maxGap = 0;
+
+		for(int i = 0; i < n; i++){
+			if(bucketMin[i] == Integer.MAX_VALUE)//no element in this bucket
+				continue;
+
+			int gap = bucketMin[i] - prev;
+			maxGap = Math.max(maxGap, gap);
+
+			prev = bucketMax[i];//prev for next min
+		}
+
+		return maxGap;
+	}
+}
