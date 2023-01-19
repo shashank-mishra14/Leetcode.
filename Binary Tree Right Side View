@@ -1,0 +1,35 @@
+class Solution {
+    
+    static class Pair { 
+        TreeNode node;
+        int lvl;
+        
+        Pair(TreeNode node, int lvl) { 
+            this.node = node;
+            this.lvl = lvl;
+        }
+    }
+    public List<Integer> rightSideView(TreeNode root) {
+        var res = new ArrayList<Integer>();
+        var queue = new ArrayDeque<Pair>();
+        
+        queue.add(new Pair(root, 0));
+        
+        while (!queue.isEmpty()) { 
+            Pair pair = queue.poll();
+            TreeNode node = pair.node;
+            int lvl = pair.lvl;
+           
+            if (node != null) {
+                
+                if (lvl >= res.size()) res.add(node.val);
+               
+                res.set(lvl, node.val);
+                queue.add(new Pair(node.left, lvl + 1));
+                queue.add(new Pair(node.right, lvl +  1));
+            }
+        }
+        return res;
+    }
+}
+
