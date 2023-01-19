@@ -1,0 +1,49 @@
+  class Trie {
+        HashMap<Character,HashMap> hm = new HashMap();
+        public Trie() {
+            this.hm=new HashMap<Character,HashMap>();
+            hm.put('*',null);   
+        }
+        
+        public void insert(String word) {
+            HashMap<Character,HashMap> hm1 = this.hm;
+            for(char c: word.toCharArray()){
+                if(!hm1.containsKey(c)){
+                    hm1.put(c,new HashMap<Character,HashMap>());
+                    hm1=hm1.get(c);
+                    hm1.put('*',null);
+                }
+                else{
+                    hm1=hm1.get(c);
+                }
+            }
+            hm1.replace('*',new HashMap<>());
+        }
+        
+        public boolean search(String word) {
+            HashMap<Character,HashMap> hm1 = this.hm;
+            for(char c: word.toCharArray()){
+                if(hm1.containsKey(c)){
+                    hm1=hm1.get(c);
+                }
+                else{
+                    return false;
+                }
+            }
+            return hm1.get('*')!=null?true:false;
+
+        }
+        
+        public boolean startsWith(String prefix) {
+             HashMap<Character,HashMap> hm1 = this.hm;
+        for(char c: prefix.toCharArray()){
+            if(hm1.containsKey(c)){
+                hm1=hm1.get(c);
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+        }
+    }
