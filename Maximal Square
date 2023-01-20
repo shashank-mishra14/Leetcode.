@@ -1,21 +1,38 @@
 class Solution {
-    private int rows, cols;
-
     public int maximalSquare(char[][] matrix) {
-        int res =0;
-        rows = matrix.length;
-        cols = matrix[0].length;
+        if (matrix == null) {
+            throw new IllegalArgumentException("Input is null");
+        }
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
 
-        for(int i=1;i<=rows;i++)
-            for(int j=1;j<=cols;j++){
-                if(matrix[i-1][j-1] == '1'){
-                    int upAndDownMin = Math.min(dp[i-1][j], dp[i][j-1]);
-                    dp[i][j] = 1 + Math.min(upAndDownMin, dp[i-1][j-1]); 
-                    res = Math.max(res, dp[i][j]);
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        if (rows < cols) {
+            return maximalSquareHelper(matrix, cols, rows, false);
+        } else {
+            return maximalSquareHelper(matrix, rows, cols, true);
+        }
+    }
+
+    private int maximalSquareHelper(char[][] matrix, int big, int small, boolean isColsSmall) {
+        int[] dp = new int[small + 1];
+        int maxSide = 0;
+        for (int j = 1; j <= big; j++) {
+            int prev = dp[0]; // Since we have added a padding in-front, dp[0] will always be zero
+            for (int i = 1; i <= small; i++) {
+                int temp = dp[i];
+                if ((isColsSmall && matrix[j - 1][i - 1] == '0') || (!isColsSmall && matrix[i - 1][j - 1] == '0')) {
+                    dp[i] = 0;
+                } else {
+                    dp[i] = Math.min(prev, Math.min(dp[i], dp[i - 1])) + 1;
+                    maxSide = Math.max(maxSide, dp[i]);
                 }
-                else 
-                    dp[i][j] = 0;
+                prev = temp;
             }
-        return res*res;
+        }
+        return maxSide * maxSide;
     }
 }
