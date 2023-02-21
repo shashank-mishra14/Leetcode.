@@ -1,0 +1,55 @@
+class Solution {
+    public String addStrings(String num1, String num2) {
+         //First we check if there is a difference between the length of the strings or not;
+        int diff = num1.length()-num2.length();
+        //if yes then we take the value of the difference;
+        diff = Math.abs(diff);
+
+//Then we add 0 in front of the smaller lengthed string using a function;
+        if(num1.length()>num2.length()){
+            num2 = addzero(num2,diff);
+        }else{
+            num1 = addzero(num1,diff);
+        }
+        StringBuilder sb = new StringBuilder();
+        int carry = 0 ; int ai = 0 ; int bi = 0; int add = 0 ;
+
+        for(int i = num1.length()-1 ;i >=0 ; i--){
+            char aii = num1.charAt(i);
+            char bii = num2.charAt(i);
+            ai = aii - '0';bi = bii -'0' ;
+                add = ai+bi+carry;
+               //storing carry and the integer we are going to add
+               //in different int;
+                carry = add/10;
+                add=add%10;
+
+                //converting int to char;
+                char addd=(char)(add + '0');
+                //additing the values in the string builder ;
+                sb.append(addd); 
+        }
+        //if some value left in carry then we will add those at last ;
+        if(carry!=0){
+            char cary = (char)(carry + '0');
+            sb.append(cary);
+        }
+        //ans will be the reverse of the stringbuilder so we will return it;
+        return sb.reverse().toString();
+
+    }
+    ////function to add 0 to the front of the string of smaller length ;
+    public String addzero(String s , int d ){
+
+        StringBuilder sb = new StringBuilder();
+        while(d>0){
+            sb.append('0');
+            d--;
+        }
+        for(int i = 0 ; i < s.length() ; i++){
+            sb.append(s.charAt(i));
+        }
+
+        return sb.toString();
+    }
+}
