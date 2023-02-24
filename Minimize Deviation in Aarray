@@ -1,0 +1,47 @@
+class Solution {
+    public int minimumDeviation(int[] nums) {
+        Integer minMax=null;
+        for(int num:nums) {
+            if ((num&1)==1) {
+                minMax=minMax==null?num:Math.max(minMax,num);
+            } else {
+                while((num&1)==0) num>>=1;
+                minMax=minMax==null?num:Math.max(minMax,num);
+            }
+        }
+        return dfs(nums,0,minMax,minMax);
+    }
+    
+    int dfs(int[] nums,int idx,int min,int max) {
+        if(idx==nums.length) return max-min;
+        var num=nums[idx];
+        if(num>=min&&num<=max) return dfs(nums,idx+1,min,max);
+        if((num&1)==1) {
+            // odd num should always less or equals max
+            if(num*2>max) {
+                // new max or new low
+                return Math.min(
+                    dfs(nums,idx+1,num,max),
+                    dfs(nums,idx+1,min,num*2)
+                );
+            } else {
+                // always multi 2
+                return dfs(nums,idx+1,Math.min(num*2,min),max);
+            }
+        } else {
+            // even number
+            while((num&1)==0&&(num>>1)>=min) {
+                num>>=1;
+            }
+            if(num>max) {
+                // odd number always less or equals max
+                return Math.min(
+                    dfs(nums,idx+1,min,num),
+                    dfs(nums,idx+1,Math.min(num/2,min),Math.max(num/2,max))
+                );
+            } else {
+                return dfs(nums,idx+1,Math.min(num,min),max);
+            }
+        }
+    }
+}
