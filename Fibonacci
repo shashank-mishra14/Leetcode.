@@ -1,0 +1,17 @@
+class Solution {
+    public int fib(int N) {
+        // Corner case.
+        if (N == 0) return 0;
+
+        // Initilization dp.
+        int[] dp = new int[N + 1];
+        dp[1] = 1;
+
+        for (int i = 2; i <= N; i++){
+            // formula
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+
+        return dp[N];
+    }
+}
