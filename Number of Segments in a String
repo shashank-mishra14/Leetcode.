@@ -1,0 +1,21 @@
+class Solution{
+public int countSegments(String s) {
+    int count = 0;
+    boolean segment = false;
+    
+    for (char symbol : s.toCharArray()) {
+        if (symbol != ' ') {
+            segment = true;
+        } else if (segment) {
+            count++;
+            segment = false;
+        }
+    }
+
+    if (segment) {
+        count++;
+    }
+    
+    return count;
+}
+}
