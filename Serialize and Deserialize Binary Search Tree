@@ -1,0 +1,39 @@
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public void preorder(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append("n" + "/");
+            return;
+        }
+        sb.append(root.val + "/");
+        preorder(root.left, sb);
+        preorder(root.right, sb);
+    }
+
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder("");
+        preorder(root, sb);
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode constructTree(String preorder[], int index[], int end) {
+        if (index[0] > end) return null;
+        if (preorder[index[0]].equals("n")) {
+            index[0] += 1;
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(preorder[index[0]]));
+        index[0] += 1;
+        root.left = constructTree(preorder, index, end);
+        root.right = constructTree(preorder, index, end);
+        return root;
+    }
+
+    public TreeNode deserialize(String data) {
+        String preorder[] = data.split("/");
+        TreeNode root = constructTree(preorder, new int[1], preorder.length - 1);
+        return root;
+    }
+}
