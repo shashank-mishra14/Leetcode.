@@ -1,0 +1,24 @@
+class Solution {
+    private int count = 0;
+    private int getHeight(TreeNode root){
+        return root == null ? 0 : Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+    }
+    private void getSum(TreeNode root, int sum, int[] path, int level, int height){
+        if(root == null || level > height) return;
+        path[level] = root.val;
+        int s = 0;
+        for(int i=level; i>=0; i--){
+            s += path[i];
+            if(s == sum) count += 1;
+        }
+        getSum(root.left, sum, path, level+1, height);
+        getSum(root.right, sum, path, level+1, height);
+    }
+    public int pathSum(TreeNode root, int sum) {
+        if(root == null) return 0;
+        int height = getHeight(root);
+        int[] path = new int[height];
+        getSum(root, sum, path, 0, height);
+        return count;
+    }
+}
